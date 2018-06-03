@@ -1,12 +1,10 @@
-#include <Windows.h>
-#include <tlhelp32.h>
-#include <iostream>
-#include <tchar.h>
-#include <thread>
+
+#include"MyProcess.h"
+
 
 using namespace std;
 
-//  Forward declarations:
+// Forward declarations:
 BOOL GetProcessList();
 void printError(TCHAR* msg);
 CRITICAL_SECTION csection;
