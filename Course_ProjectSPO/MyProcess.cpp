@@ -28,8 +28,8 @@ BOOL MyProcess::GetProcessList()
 		}
 		wcout <<"\n  Process ID       = " << pe32.th32ProcessID
 	          <<"\n  Process memory   = " << pe32.dwSize
-		      <<"\n   Thread count     = " << pe32.cntThreads
-		      <<"\n   Priority base    = " << pe32.pcPriClassBase;
+		      <<"\n   Thread count    = " << pe32.cntThreads
+		      <<"\n   Priority base   = " << pe32.pcPriClassBase;
 
 	} while (Process32Next(hProcessSnap, &pe32));
 
@@ -41,25 +41,26 @@ BOOL MyProcess::GetProcessList()
 BOOL MyProcess::KillProcess(DWORD procID)
 {
 	Process32First(hProcessSnap, &pe32);
+	while (Process32Next(hProcessSnap, &pe32)){
 
+		if (procID == pe32.th32ProcessID){
 
-	while (Process32Next(hProcessSnap, &pe32))
-	{
-		if (procID == pe32.th32ProcessID)
-		{
 			hProcess = OpenProcess(PROCESS_TERMINATE, 0, pe32.th32ProcessID);
-
 			TerminateProcess(hProcess, 0);
-
-			//ListView_DeleteItem(proc_list, iSelect);
+			
 		}
 	}
-	CloseHandle(hProcessSnap);
-	CloseHandle(hProcess);
 	return 0;
 }
 
-BOOL MyProcess::ChangePriority()
+BOOL MyProcess::ChangePriority(DWORD procID, DWORD priority)
 {
+	Process32First(hProcessSnap, &pe32);
+	while (Process32Next(hProcessSnap, &pe32)) {
+		if (procID == pe32.th32ProcessID)
+			SetPriorityClass(hProcess, priority);
+		
+
+	}
 	return 0;
 }

@@ -23,7 +23,8 @@ public:
 
 	BOOL GetProcessList();
 	BOOL KillProcess(DWORD);
-	BOOL ChangePriority();
+	BOOL ChangePriority(DWORD, DWORD);
+	
 
 	~MyProcess() {
 		CloseHandle(hProcessSnap);
