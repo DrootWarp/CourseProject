@@ -5,7 +5,7 @@
 using namespace std;
 
 // Forward declarations:
-BOOL GetProcessList();
+//BOOL GetProcessList();
 void printError(TCHAR* msg);
 CRITICAL_SECTION csection;
 
@@ -19,10 +19,11 @@ DWORD WINAPI Thread1(LPVOID LParam) {
 
 DWORD WINAPI Thread2(LPVOID LParam) {
 
+	MyProcess Mp;
 	while (1)
 	{
 		EnterCriticalSection(&csection);
-		GetProcessList();
+		Mp.GetProcessList();
 		Sleep(1000);
 		LeaveCriticalSection(&csection);
 	}
@@ -48,64 +49,64 @@ int main(void)
 	return 0;
 }
 
-BOOL GetProcessList()
-{
-	HANDLE hProcessSnap;
-	HANDLE hProcess;
-	PROCESSENTRY32 pe32;
-	DWORD dwPriorityClass;
-	DWORD dwProcessMemory;
-
-	// Take a snapshot of all processes in the system.
-	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (hProcessSnap == INVALID_HANDLE_VALUE)
-	{
-		//printError(TEXT("CreateToolhelp32Snapshot (of processes)"));
-		return(FALSE);
-	}
-
-	// Set the size of the structure before using it.
-	pe32.dwSize = sizeof(PROCESSENTRY32);
-
-	// Retrieve information about the first process,
-	// and exit if unsuccessful
-	if (!Process32First(hProcessSnap, &pe32))
-	{
-		//printError(TEXT("Process32First")); // show cause of failure
-		CloseHandle(hProcessSnap);          // clean the snapshot object
-		return(FALSE);
-	}
-
-	// Now walk the snapshot of processes, and
-	// display information about each process in turn
-	do
-	{
-		_tprintf(TEXT("\n\n====================================================="));
-		_tprintf(TEXT("\n  PROCESS NAME:  %s"), pe32.szExeFile);
-		//_tprintf(TEXT("\n-------------------------------------------------------"));
-
-		// Retrieve the priority class.
-		dwPriorityClass = 0;
-		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-		if (hProcess == NULL)
-			_tprintf(TEXT("OpenProcess"));
-		else
-		{
-			dwPriorityClass = GetPriorityClass(hProcess);
-			if (!dwPriorityClass)
-				_tprintf(TEXT("GetPriorityClass"));
-			CloseHandle(hProcess);
-		}
-		wcout << "\n  Process ID        = " << pe32.th32ProcessID;
-		wcout << "\n  Process memory        = " << pe32.dwSize;
-		_tprintf(TEXT("\n  Thread count      = %d"), pe32.cntThreads);
-		_tprintf(TEXT("\n  Priority base     = %d"), pe32.pcPriClassBase);
-
-	} while (Process32Next(hProcessSnap, &pe32));
-
-	CloseHandle(hProcessSnap);
-	return(TRUE);
-}
+//BOOL GetProcessList()
+//{
+//	HANDLE hProcessSnap;
+//	HANDLE hProcess;
+//	PROCESSENTRY32 pe32;
+//	DWORD dwPriorityClass;
+//	DWORD dwProcessMemory;
+//
+//	// Take a snapshot of all processes in the system.
+//	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+//	if (hProcessSnap == INVALID_HANDLE_VALUE)
+//	{
+//		//printError(TEXT("CreateToolhelp32Snapshot (of processes)"));
+//		return(FALSE);
+//	}
+//
+//	// Set the size of the structure before using it.
+//	pe32.dwSize = sizeof(PROCESSENTRY32);
+//
+//	// Retrieve information about the first process,
+//	// and exit if unsuccessful
+//	if (!Process32First(hProcessSnap, &pe32))
+//	{
+//		//printError(TEXT("Process32First")); // show cause of failure
+//		CloseHandle(hProcessSnap);          // clean the snapshot object
+//		return(FALSE);
+//	}
+//
+//	// Now walk the snapshot of processes, and
+//	// display information about each process in turn
+//	do
+//	{
+//		_tprintf(TEXT("\n\n====================================================="));
+//		_tprintf(TEXT("\n  PROCESS NAME:  %s"), pe32.szExeFile);
+//		//_tprintf(TEXT("\n-------------------------------------------------------"));
+//
+//		// Retrieve the priority class.
+//		dwPriorityClass = 0;
+//		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
+//		if (hProcess == NULL)
+//			_tprintf(TEXT("OpenProcess"));
+//		else
+//		{
+//			dwPriorityClass = GetPriorityClass(hProcess);
+//			if (!dwPriorityClass)
+//				_tprintf(TEXT("GetPriorityClass"));
+//			CloseHandle(hProcess);
+//		}
+//		wcout << "\n  Process ID        = " << pe32.th32ProcessID;
+//		wcout << "\n  Process memory        = " << pe32.dwSize;
+//		_tprintf(TEXT("\n  Thread count      = %d"), pe32.cntThreads);
+//		_tprintf(TEXT("\n  Priority base     = %d"), pe32.pcPriClassBase);
+//
+//	} while (Process32Next(hProcessSnap, &pe32));
+//
+//	CloseHandle(hProcessSnap);
+//	return(TRUE);
+//}
 
 void printError(TCHAR* msg)
 {

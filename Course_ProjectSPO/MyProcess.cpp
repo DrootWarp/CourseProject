@@ -5,26 +5,7 @@ BOOL MyProcess::GetProcessList()
 	DWORD dwPriorityClass;
 	DWORD dwProcessMemory;
 
-	// Take a snapshot of all processes in the system.
-	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (hProcessSnap == INVALID_HANDLE_VALUE)
-	{
-		//printError(TEXT("CreateToolhelp32Snapshot (of processes)"));
-		return(FALSE);
-	}
-
-	// Set the size of the structure before using it.
-	pe32.dwSize = sizeof(PROCESSENTRY32);
-
-	// Retrieve information about the first process,
-	// and exit if unsuccessful
-	if (!Process32First(hProcessSnap, &pe32))
-	{
-		//printError(TEXT("Process32First")); // show cause of failure
-		CloseHandle(hProcessSnap);          // clean the snapshot object
-		return(FALSE);
-	}
-
+	Process32First(hProcessSnap, &pe32);
 	// Now walk the snapshot of processes, and
 	// display information about each process in turn
 	do
@@ -45,22 +26,20 @@ BOOL MyProcess::GetProcessList()
 				_tprintf(TEXT("GetPriorityClass"));
 			CloseHandle(hProcess);
 		}
-		wcout << "\n  Process ID       = " << pe32.th32ProcessID
-	          << "\n  Process memory   = " << pe32.dwSize
+		wcout <<"\n  Process ID       = " << pe32.th32ProcessID
+	          <<"\n  Process memory   = " << pe32.dwSize
 		      <<"\n   Thread count     = " << pe32.cntThreads
 		      <<"\n   Priority base    = " << pe32.pcPriClassBase;
+
 	} while (Process32Next(hProcessSnap, &pe32));
 
-	CloseHandle(hProcessSnap);
+	//CloseHandle(hProcessSnap);
+
 	return(TRUE);
 }
 
 BOOL MyProcess::KillProcess(DWORD procID)
 {
-	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-	pe32.dwSize = sizeof(PROCESSENTRY32);
-
 	Process32First(hProcessSnap, &pe32);
 
 

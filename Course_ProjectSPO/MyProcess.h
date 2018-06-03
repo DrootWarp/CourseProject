@@ -16,8 +16,17 @@ private:
 	HANDLE hProcess;
 	PROCESSENTRY32 pe32;
 public:
+	MyProcess() {
+		hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+		pe32.dwSize = sizeof(PROCESSENTRY32);
+	}
+
 	BOOL GetProcessList();
 	BOOL KillProcess(DWORD);
 	BOOL ChangePriority();
 
+	~MyProcess() {
+		CloseHandle(hProcessSnap);
+		CloseHandle(hProcess);
+	}
 };
