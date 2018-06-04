@@ -1,21 +1,28 @@
 #include "MyProcess.h"
 
-BOOL MyProcess::GetProcessList()
+
+DWORD MyProcess::GetProcessMemory()
+{
+	PROCESS_MEMORY_COUNTERS pmc;
+	GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc));
+	return pmc.WorkingSetSize;
+}
+
+BOOL MyProcess::ShowProcessList(DWORD pID)
 {
 	DWORD dwPriorityClass;
 	DWORD dwProcessMemory;
-
+	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	Process32First(hProcessSnap, &pe32);
 	// Now walk the snapshot of processes, and
 	// display information about each process in turn
 	do
 	{
 		_tprintf(TEXT("\n\n====================================================="));
-		_tprintf(TEXT("\n  PROCESS NAME:  %s"), pe32.szExeFile);
-		//_tprintf(TEXT("\n-------------------------------------------------------"));
 
 		// Retrieve the priority class.
 		dwPriorityClass = 0;
+		dwProcessMemory = 0;
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
 		if (hProcess == NULL)
 			_tprintf(TEXT("OpenProcess"));
@@ -26,20 +33,24 @@ BOOL MyProcess::GetProcessList()
 				_tprintf(TEXT("GetPriorityClass"));
 			CloseHandle(hProcess);
 		}
-		wcout <<"\n  Process ID       = " << pe32.th32ProcessID
-	          <<"\n  Process memory   = " << pe32.dwSize
-		      <<"\n   Thread count    = " << pe32.cntThreads
-		      <<"\n   Priority base   = " << pe32.pcPriClassBase;
-
+		if (pe32.th32ProcessID == pID)
+		{
+			KillProcess(pe32.th32ProcessID);
+		}
+		dwProcessMemory = GetProcessMemory();
+		wcout <<"\n  PROCESS NAME    : " << pe32.szExeFile
+			  <<"\n  Process ID      : " << pe32.th32ProcessID
+	          <<"\n  Process memory  : " << dwProcessMemory
+		      <<"\n  Thread count    : " << pe32.cntThreads
+		      <<"\n  Priority base   : " << pe32.pcPriClassBase;
 	} while (Process32Next(hProcessSnap, &pe32));
-
-	//CloseHandle(hProcessSnap);
 
 	return(TRUE);
 }
 
 BOOL MyProcess::KillProcess(DWORD procID)
 {
+	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	Process32First(hProcessSnap, &pe32);
 	while (Process32Next(hProcessSnap, &pe32)){
 
@@ -50,17 +61,35 @@ BOOL MyProcess::KillProcess(DWORD procID)
 			
 		}
 	}
+
 	return 0;
 }
 
 BOOL MyProcess::ChangePriority(DWORD procID, DWORD priority)
 {
+	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	Process32First(hProcessSnap, &pe32);
 	while (Process32Next(hProcessSnap, &pe32)) {
-		if (procID == pe32.th32ProcessID)
-			SetPriorityClass(hProcess, priority);
-		
 
+		if (procID == pe32.th32ProcessID) {
+
+			hProcess = OpenProcess(PROCESS_SET_INFORMATION, 0, pe32.th32ProcessID);
+			SetPriorityClass(hProcess, priority);
+
+		}
 	}
+
+	return 0;
+}
+
+BOOL MyProcess::RunProcess()
+{
+
+	return 0;
+}
+
+BOOL MyProcess::OpenTheProcessDirectory()
+{
+
 	return 0;
 }

@@ -7,6 +7,7 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <commctrl.h>
+#include <Psapi.h>
 
 using namespace std;
 
@@ -17,13 +18,15 @@ private:
 	PROCESSENTRY32 pe32;
 public:
 	MyProcess() {
-		hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 		pe32.dwSize = sizeof(PROCESSENTRY32);
 	}
 
-	BOOL GetProcessList();
+	DWORD GetProcessMemory();
+	BOOL ShowProcessList(DWORD);
 	BOOL KillProcess(DWORD);
 	BOOL ChangePriority(DWORD, DWORD);
+	BOOL RunProcess();
+	BOOL OpenTheProcessDirectory();
 	
 
 	~MyProcess() {

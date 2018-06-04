@@ -1,11 +1,12 @@
 
-#include"MyProcess.h"
-
+#include "MyProcess.h"
+#include "GUI.h"
 
 using namespace std;
 
 void printError(TCHAR* msg);
 CRITICAL_SECTION csection;
+DWORD PID;
 
 DWORD WINAPI Thread1(LPVOID LParam) {
 	while (1) {
@@ -21,8 +22,10 @@ DWORD WINAPI Thread2(LPVOID LParam) {
 	while (1)
 	{
 		EnterCriticalSection(&csection);
-		Mp.GetProcessList();
-		Sleep(1000);
+		Mp.ShowProcessList(PID);
+		scanf_s("%d", &PID);
+		Sleep(25000);
+
 		LeaveCriticalSection(&csection);
 	}
 

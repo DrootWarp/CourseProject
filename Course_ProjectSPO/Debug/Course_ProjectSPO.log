@@ -1,5 +1,2 @@
-﻿  MyProcess.cpp
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(6): warning C4101: 'dwProcessMemory': unreferenced local variable
-  Source.cpp
-  Generating Code...
+﻿  Source.cpp
   Course_ProjectSPO.vcxproj -> C:\Users\Ilya\source\repos\Course_ProjectSPO\Debug\Course_ProjectSPO.exe
