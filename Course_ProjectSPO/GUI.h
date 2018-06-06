@@ -11,6 +11,7 @@ using namespace std;
 
 class GUI {
 public:
+
 	static void Menu();
 	static void ChangePriorityMenu();
 	static void printTableLine();
