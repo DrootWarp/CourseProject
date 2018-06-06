@@ -8,13 +8,13 @@ void printError(TCHAR* msg);
 CRITICAL_SECTION csection;
 DWORD PID;
 
-DWORD WINAPI Thread1(LPVOID LParam) {
-	while (1) {
-
-		system("cls");
-		return 0;
-	}
-}
+//DWORD WINAPI Thread1(LPVOID LParam) {
+//	while (1) {
+//
+//		system("cls");
+//		return 0;
+//	}
+//}
 
 DWORD WINAPI Thread2(LPVOID LParam) {
 
@@ -22,10 +22,9 @@ DWORD WINAPI Thread2(LPVOID LParam) {
 	while (1)
 	{
 		EnterCriticalSection(&csection);
-		Mp.ShowProcessList(PID);
-		scanf_s("%d", &PID);
+		Mp.ShowProcessList();
 		Sleep(25000);
-
+		system("cls");
 		LeaveCriticalSection(&csection);
 	}
 
@@ -38,7 +37,7 @@ int main(void)
 {
 	InitializeCriticalSection(&csection);
 	HANDLE Threads[2];
-	Threads[0] = CreateThread(NULL, 0, Thread1, NULL, CREATE_SUSPENDED, NULL);
+	//Threads[0] = CreateThread(NULL, 0, Thread1, NULL, CREATE_SUSPENDED, NULL);
 	Threads[1] = CreateThread(NULL, 0, Thread2, NULL, CREATE_SUSPENDED, NULL);
 	ResumeThread(Threads[0]);
 	ResumeThread(Threads[1]);

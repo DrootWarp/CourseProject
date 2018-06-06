@@ -5,9 +5,12 @@
 #include <tlhelp32.h>
 #include <iostream>
 #include <tchar.h>
+#include <wchar.h>
 #include <stdio.h>
 #include <commctrl.h>
 #include <Psapi.h>
+#include <conio.h>
+#include <sstream>
 
 using namespace std;
 
@@ -21,8 +24,8 @@ public:
 		pe32.dwSize = sizeof(PROCESSENTRY32);
 	}
 
-	DWORD GetProcessMemory();
-	BOOL ShowProcessList(DWORD);
+	SIZE_T GetProcessMemory();
+	BOOL ShowProcessList();
 	BOOL KillProcess(DWORD);
 	BOOL ChangePriority(DWORD, DWORD);
 	BOOL RunProcess();
@@ -30,7 +33,6 @@ public:
 	
 
 	~MyProcess() {
-		CloseHandle(hProcessSnap);
 		CloseHandle(hProcess);
 	}
 };

@@ -1,17 +1,17 @@
 #include "MyProcess.h"
 
 
-DWORD MyProcess::GetProcessMemory()
-{
-	PROCESS_MEMORY_COUNTERS pmc;
-	GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc));
-	return pmc.WorkingSetSize;
-}
+//SIZE_T MyProcess::GetProcessMemory()
+//{
+//	return pmc.WorkingSetSize;
+//}
 
-BOOL MyProcess::ShowProcessList(DWORD pID)
+BOOL MyProcess::ShowProcessList()
 {
 	DWORD dwPriorityClass;
 	DWORD dwProcessMemory;
+	PROCESS_MEMORY_COUNTERS pmc;
+
 	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	Process32First(hProcessSnap, &pe32);
 	// Now walk the snapshot of processes, and
@@ -33,16 +33,12 @@ BOOL MyProcess::ShowProcessList(DWORD pID)
 				_tprintf(TEXT("GetPriorityClass"));
 			CloseHandle(hProcess);
 		}
-		if (pe32.th32ProcessID == pID)
-		{
-			KillProcess(pe32.th32ProcessID);
-		}
-		dwProcessMemory = GetProcessMemory();
-		wcout <<"\n  PROCESS NAME    : " << pe32.szExeFile
-			  <<"\n  Process ID      : " << pe32.th32ProcessID
-	          <<"\n  Process memory  : " << dwProcessMemory
-		      <<"\n  Thread count    : " << pe32.cntThreads
-		      <<"\n  Priority base   : " << pe32.pcPriClassBase;
+			wcout << "\n  PROCESS NAME    : " << pe32.szExeFile
+				  << "\n  Process ID      : " << pe32.th32ProcessID
+				  << "\n  Process memory  : " << pe32.dwSize
+				  << "\n  Thread count    : " << pe32.cntThreads
+				  << "\n  Priority base   : " << pe32.pcPriClassBase;
+		
 	} while (Process32Next(hProcessSnap, &pe32));
 
 	return(TRUE);
@@ -82,8 +78,38 @@ BOOL MyProcess::ChangePriority(DWORD procID, DWORD priority)
 	return 0;
 }
 
+wchar_t* cw(const char *arry)
+{
+	wchar_t *w_s = new wchar_t[4096];
+	MultiByteToWideChar(CP_ACP, 0, arry, -1, w_s, 4096);
+	return w_s;
+}
+
+
 BOOL MyProcess::RunProcess()
 {
+    wstring filePath = L"C:\\Program Files\\Nexus Mod Manager\\NexusClient.exe";
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+	if (!CreateProcess(NULL,   // No module name (use command line)
+		filePath,        // Command line
+		NULL,           // Process handle not inheritable
+		NULL,           // Thread handle not inheritable
+		FALSE,          // Set handle inheritance to FALSE
+		0,              // No creation flags
+		NULL,           // Use parent's environment block
+		NULL,           // Use parent's starting directory 
+		&si,            // Pointer to STARTUPINFO structure
+		&pi)           // Pointer to PROCESS_INFORMATION structure
+		)
+	{
+		printf("CreateProcess failed (%d).\n", GetLastError());
+		return 0;
+	}
 
 	return 0;
 }
