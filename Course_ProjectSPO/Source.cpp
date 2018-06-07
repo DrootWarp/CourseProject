@@ -1,4 +1,3 @@
-
 #include "MyProcess.h"
 #include "GUI.h"
 
@@ -19,11 +18,12 @@ DWORD PID;
 DWORD WINAPI Thread2(LPVOID LParam) {
 
 	MyProcess Mp;
+	//GUI::ShowProcessListMenu();
 	while (1)
 	{
 		EnterCriticalSection(&csection);
 		Mp.ShowProcessList();
-		Sleep(25000);
+		Sleep(10000);
 		system("cls");
 		LeaveCriticalSection(&csection);
 	}
@@ -33,19 +33,19 @@ DWORD WINAPI Thread2(LPVOID LParam) {
 }
 
 
-int main(void)
-{
-	InitializeCriticalSection(&csection);
-	HANDLE Threads[2];
-	//Threads[0] = CreateThread(NULL, 0, Thread1, NULL, CREATE_SUSPENDED, NULL);
-	Threads[1] = CreateThread(NULL, 0, Thread2, NULL, CREATE_SUSPENDED, NULL);
-	ResumeThread(Threads[0]);
-	ResumeThread(Threads[1]);
-
+int main(){
+	GUI::Menu();
 	system("pause");
-	DeleteCriticalSection(&csection);
-	::TerminateThread(Threads[0], 007);
-	::TerminateThread(Threads[1], 007);
+	//InitializeCriticalSection(&csection);
+	//HANDLE Threads[2];
+	//Threads[0] = CreateThread(NULL, 0, Thread1, NULL, CREATE_SUSPENDED, NULL);
+	//Threads[1] = CreateThread(NULL, 0, Thread2, NULL, CREATE_SUSPENDED, NULL);
+	//ResumeThread(Threads[0]);
+	//ResumeThread(Threads[1]);
+	//WaitForSingleObject(Threads[1],INFINITE);
+	//DeleteCriticalSection(&csection);
+	//::TerminateThread(Threads[0], 007);
+	//::TerminateThread(Threads[1], 007);
 	return 0;
 }
 

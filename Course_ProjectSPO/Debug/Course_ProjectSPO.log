@@ -1,8 +1,13 @@
-﻿  MyProcess.cpp
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(13): warning C4101: 'pmc': unreferenced local variable
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(98): error C2664: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': cannot convert argument 2 from 'wchar_t *' to 'LPSTR'
-  c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(107): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(111): error C2561: 'MyProcess::RunProcess': function must return a value
-  c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(89): note: see declaration of 'MyProcess::RunProcess'
+﻿  GUI.cpp
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(137): warning C4101: 'Priority': unreferenced local variable
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(416): warning C4101: 'a': unreferenced local variable
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(433): warning C4101: 'a': unreferenced local variable
+  MyProcess.cpp
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(18): warning C4101: 'dwProcessMemory': unreferenced local variable
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(17): warning C4101: 'dwPriorityClass': unreferenced local variable
+c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(19): warning C4101: 'pmc': unreferenced local variable
+  Paint.cpp
   Source.cpp
+  ThreadsResourse.cpp
   Generating Code...
+  Course_ProjectSPO.vcxproj -> C:\Users\Ilya\source\repos\Course_ProjectSPO\Debug\Course_ProjectSPO.exe

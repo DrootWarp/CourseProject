@@ -10,7 +10,7 @@
 #include <commctrl.h>
 #include <Psapi.h>
 #include <conio.h>
-#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -30,9 +30,10 @@ public:
 	BOOL ChangePriority(DWORD, DWORD);
 	BOOL RunProcess();
 	BOOL OpenTheProcessDirectory();
-	
+	void ShowProcessHad();
 
 	~MyProcess() {
 		CloseHandle(hProcess);
+		CloseHandle(hProcessSnap);
 	}
 };

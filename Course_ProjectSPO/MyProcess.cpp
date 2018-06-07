@@ -1,10 +1,16 @@
 #include "MyProcess.h"
+#include "GUI.h"
 
 
 //SIZE_T MyProcess::GetProcessMemory()
 //{
 //	return pmc.WorkingSetSize;
 //}
+
+SIZE_T MyProcess::GetProcessMemory()
+{
+	return SIZE_T();
+}
 
 BOOL MyProcess::ShowProcessList()
 {
@@ -16,31 +22,20 @@ BOOL MyProcess::ShowProcessList()
 	Process32First(hProcessSnap, &pe32);
 	// Now walk the snapshot of processes, and
 	// display information about each process in turn
+	ShowProcessHad();
 	do
 	{
-		_tprintf(TEXT("\n\n====================================================="));
-
-		// Retrieve the priority class.
-		dwPriorityClass = 0;
-		dwProcessMemory = 0;
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-		if (hProcess == NULL)
-			_tprintf(TEXT("OpenProcess"));
-		else
-		{
-			dwPriorityClass = GetPriorityClass(hProcess);
-			if (!dwPriorityClass)
-				_tprintf(TEXT("GetPriorityClass"));
-			CloseHandle(hProcess);
-		}
-			wcout << "\n  PROCESS NAME    : " << pe32.szExeFile
-				  << "\n  Process ID      : " << pe32.th32ProcessID
-				  << "\n  Process memory  : " << pe32.dwSize
-				  << "\n  Thread count    : " << pe32.cntThreads
-				  << "\n  Priority base   : " << pe32.pcPriClassBase;
+		GUI::printTableLine();
+		wcout << "*" << setw(40) << left << pe32.szExeFile
+			<< "*" << setw(15) << pe32.th32ProcessID
+			<< "*" << setw(15) << pe32.dwSize
+			<< "*" << setw(15) << pe32.cntThreads
+			<< "*" << setw(15) << pe32.pcPriClassBase
+			<< "*" << endl;
 		
 	} while (Process32Next(hProcessSnap, &pe32));
-
+	GUI::printTableLine();
 	return(TRUE);
 }
 
@@ -54,7 +49,7 @@ BOOL MyProcess::KillProcess(DWORD procID)
 
 			hProcess = OpenProcess(PROCESS_TERMINATE, 0, pe32.th32ProcessID);
 			TerminateProcess(hProcess, 0);
-			
+			return 0;
 		}
 	}
 
@@ -85,7 +80,6 @@ wchar_t* cw(const char *arry)
 	return w_s;
 }
 
-
 BOOL MyProcess::RunProcess()
 {
     wstring filePath = L"C:\\Program Files\\Nexus Mod Manager\\NexusClient.exe";
@@ -96,7 +90,7 @@ BOOL MyProcess::RunProcess()
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
 	if (!CreateProcess(NULL,   // No module name (use command line)
-		filePath,        // Command line
+		NULL,        // Command line
 		NULL,           // Process handle not inheritable
 		NULL,           // Thread handle not inheritable
 		FALSE,          // Set handle inheritance to FALSE
@@ -118,4 +112,15 @@ BOOL MyProcess::OpenTheProcessDirectory()
 {
 
 	return 0;
+}
+
+void MyProcess::ShowProcessHad()
+{
+	GUI::printTableLine();
+	wcout << "*" << setw(40) << left << "PROCESS NAME "
+		<< "*" << setw(15) << "Process ID    "
+		<< "*" << setw(15) << "Process memory"
+		<< "*" << setw(15) << "Thread count  "
+		<< "*" << setw(15) << "Priority base "
+		<< "*" << endl;
 }

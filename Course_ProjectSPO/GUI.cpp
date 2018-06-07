@@ -1,73 +1,8 @@
 #include "GUI.h"
 
-void printCharTimes(char c, int t) {
-	for (int i = 0; i < t; i++) cout << c;
-}
-
-void paintHeader(char filler) {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (short i = 0; i < 9; i++) {
-		SetConsoleCursorPosition(hConsole, { 0, i });
-		if (i == 3 || i == 4 || i == 5) {
-			printCharTimes(filler, 51);
-			SetConsoleCursorPosition(hConsole, { 68, i });
-			printCharTimes(filler, 52);
-			continue;
-		}
-		printCharTimes(filler, 120);
-	}
-}
-
-void paintShow(char filler){
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleCursorPosition(hConsole, { 50, 13 });
-		printCharTimes(filler, 1);
-	}
-
-void paintKill(char filler){
-
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(hConsole, { 50, 15 });
-	printCharTimes(filler, 1);
-}
-
-void paintChange(char filler) {
-
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(hConsole, { 50, 17 });
-	printCharTimes(filler, 1);
-}
-
-void paintFunctionsHeader(char filler){
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (short i = 9; i < 30; i++) {
-		SetConsoleCursorPosition(hConsole, { 0, i });
-		if (i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 18 || i == 19 || i == 20 || i == 21 ) {
-			printCharTimes(filler, 50);
-			SetConsoleCursorPosition(hConsole, { 70 , i });
-			printCharTimes(filler, 50);
-			continue;
-		}
-		printCharTimes(filler, 120);
-	}
-}
-
-void paintShowMenu(char filler) {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (short i = 0; i < 30; i++) {
-		SetConsoleCursorPosition(hConsole, { 0, i });
-		if (i > 10 && i < 20) {
-			printCharTimes(filler, 28);
-			SetConsoleCursorPosition(hConsole, { 52 , i });
-			printCharTimes(filler, 28);
-			continue;
-		}
-		printCharTimes(filler, 80);
-	}
-}
-
 void GUI::Menu()
 {
+	Paint paint;
 	system("mode con cols=120 lines=30");
 	system("cls");
 	int mod = 0;
@@ -90,8 +25,8 @@ void GUI::Menu()
 	SetConsoleCursorPosition(hConsole, { 52, 20 });
 	cout << "Run process";
 
-	paintHeader(filler);
-	paintFunctionsHeader('=');
+    paint.paintHeader(filler);
+	paint.paintFunctionsHeader('=');
 
 	SetConsoleCursorPosition(hConsole, { 50, 13 });
 	cout << "=>";
@@ -116,8 +51,7 @@ void GUI::Menu()
 			}
 			case 1: {
 				system("cls");
-				_getch();
-				printf("Kill");
+				GUI::KillProcessMenu();
 				return;
 			}
 			case 2: {
@@ -128,12 +62,13 @@ void GUI::Menu()
 			}
 			case 3: {
 				system("cls");
-				_getch();
-				printf("Run");
-				GUI::Menu();
+				GUI::RunProcessMenu();
 				return;
 			}
 			}
+		}
+		case 27: {
+			exit(0);
 		}
 		}
 		switch (mod) {
@@ -192,26 +127,31 @@ void GUI::Menu()
 
 void GUI::ChangePriorityMenu()
 {
+	system("mode con cols=80 lines=30");
 	system("cls");
 	int mod = 0;
 	char a;
 	char filler = '#';
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD Priority;
 
-	SetConsoleCursorPosition(hConsole, { 52, 4 });
-	cout << "Choose refresh time: ";
+	SetConsoleCursorPosition(hConsole, { 52, 12 });
+	cout << "Choose priority rate: ";
 
 	SetConsoleCursorPosition(hConsole, { 52, 14 });
-	cout << "Fast";
+	cout << "High";
 
 	SetConsoleCursorPosition(hConsole, { 52, 16 });
-	cout << "Normally";
+	cout << "Above average";
 
 	SetConsoleCursorPosition(hConsole, { 52, 18 });
-	cout << "Slow";
+	cout << "Average";
 
 	SetConsoleCursorPosition(hConsole, { 52, 20 });
-	cout << "Stop";
+	cout << "Below average";
+
+	SetConsoleCursorPosition(hConsole, { 52, 22 });
+	cout << "Low";
 
 	SetConsoleCursorPosition(hConsole, { 47, 11 });
 	cout << "=>";
@@ -219,11 +159,15 @@ void GUI::ChangePriorityMenu()
 		SetConsoleCursorPosition(hConsole, { 0, 0 });
 		switch (a = _getch()) {
 		case 80: {
-			if (mod < 3) mod++;
+			if (mod < 5) mod++;
 			break;
 		}
 		case 72: {
 			if (mod > 0) mod--;
+			break;
+		}
+		case 8: {
+			GUI::Menu();
 			break;
 		}
 		case '\r': {
@@ -249,7 +193,12 @@ void GUI::ChangePriorityMenu()
 				system("cls");
 				_getch();
 				printf("Run");
-				GUI::Menu();
+				return;
+			}
+			case 4: {
+				system("cls");
+				_getch();
+				printf("Run");
 				return;
 			}
 			}
@@ -265,6 +214,8 @@ void GUI::ChangePriorityMenu()
 			cout << "  ";
 			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
+			cout << "  ";
 			break;
 		}
 		case 1: {
@@ -273,6 +224,8 @@ void GUI::ChangePriorityMenu()
 			SetConsoleCursorPosition(hConsole, { 50, 15 });
 			cout << "=>";
 			SetConsoleCursorPosition(hConsole, { 50, 17 });
+			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "  ";
 			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "  ";
@@ -287,6 +240,8 @@ void GUI::ChangePriorityMenu()
 			cout << "=>";
 			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
+			cout << "  ";
 			break;
 		}
 		case 3: {
@@ -295,6 +250,21 @@ void GUI::ChangePriorityMenu()
 			SetConsoleCursorPosition(hConsole, { 50, 15 });
 			cout << "  ";
 			SetConsoleCursorPosition(hConsole, { 50, 17 });
+			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
+			cout << "=>";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
+			cout << "  ";
+			break;
+		}
+		case 4: {
+			SetConsoleCursorPosition(hConsole, { 50, 13 });
+			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 15 });
+			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 17 });
+			cout << "  ";
+			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "  ";
 			SetConsoleCursorPosition(hConsole, { 50, 19 });
 			cout << "=>";
@@ -314,6 +284,7 @@ void GUI::printTableLine()
 void GUI::ShowProcessListMenu()
 {
 	system("mode con cols=80 lines=30");
+	Paint paint;
 	int mod = 0;
 	char a;
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -333,12 +304,13 @@ void GUI::ShowProcessListMenu()
 	SetConsoleCursorPosition(hConsole, { 36, 19 });
 	cout << "Stop";
 
-	paintShowMenu('%');
+	paint.paintShowMenu('%');
 
 	SetConsoleCursorPosition(hConsole, { 34, 12 });
 	cout << "=>";
 
 	while (true) {
+		system("mode con cols=120 lines=500");
 		SetConsoleCursorPosition(hConsole, { 0, 0 });
 		switch (a = _getch()) {
 		case 80: {
@@ -349,30 +321,37 @@ void GUI::ShowProcessListMenu()
 			if (mod > 0) mod--;
 			break;
 		}
+		case 8: {
+			GUI::Menu();
+			break;
+		}
 		case '\r': {
 			switch (mod) {
 			case 0: {
 				system("cls");
-				GUI::ShowProcessListMenu();
+				MyProcess Mp;
+				Mp.ShowProcessList();
 				return;
 			}
 			case 1: {
 				system("cls");
 				_getch();
-				printf("Kill");
+				MyProcess Mp;
+				Mp.ShowProcessList();
 				return;
 			}
 			case 2: {
 				system("cls");
 				printf("Change");
-				GUI::ChangePriorityMenu();
+				MyProcess Mp;
+				Mp.ShowProcessList();
 				return;
 			}
 			case 3: {
 				system("cls");
+				MyProcess Mp;
+				Mp.ShowProcessList();
 				_getch();
-				printf("Run");
-				GUI::Menu();
 				return;
 			}
 			}
@@ -430,6 +409,38 @@ void GUI::ShowProcessListMenu()
 
 void GUI::RunProcessMenu()
 {
+	system("mode con cols=120 lines=30");
+	system("cls");
+	int mod = 0;
+	char a;
+	char filler = '#';
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD FilePath;
 
+	SetConsoleCursorPosition(hConsole, { 52, 12 });
+	cout << "Input app path : ";
+
+	SetConsoleCursorPosition(hConsole, { 52, 14 });
+	cin >> FilePath;
+}
+
+void GUI::KillProcessMenu()
+{
+	system("mode con cols=80 lines=30");
+	system("cls");
+	int mod = 0;
+	char a;
+	char filler = '#';
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD Pid;
+
+	SetConsoleCursorPosition(hConsole, { 52, 12 });
+	cout << "Input process PID : ";
+
+	SetConsoleCursorPosition(hConsole, { 52, 14 });
+	cin >> Pid;
+
+	MyProcess MP;
+	MP.KillProcess(Pid);
 }
 

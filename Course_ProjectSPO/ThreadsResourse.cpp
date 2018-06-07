@@ -1,4 +1,15 @@
 #include"ThreadsResourse.h"
+#include "MyProcess.h"
+
+DWORD ThreadResourse::ThreadShowProcessList(LPVOID refreshTime)
+{
+	MyProcess Mp;
+	while (1) {
+		Mp.ShowProcessList();
+		Sleep((DWORD)refreshTime);
+	}
+	return 0;
+}
 
 DWORD ThreadResourse::ThreadKillProcess(LPVOID)
 {

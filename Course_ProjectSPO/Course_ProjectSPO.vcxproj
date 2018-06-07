@@ -117,13 +117,18 @@
   <ItemGroup>
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="MyProcess.cpp" />
+    <ClCompile Include="Paint.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="ThreadsResourse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h" />
     <ClInclude Include="MyProcess.h" />
+    <ClInclude Include="Paint.h" />
     <ClInclude Include="ThreadsResourse.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,9 @@
     <ClCompile Include="MyProcess.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Paint.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThreadsResourse.h">
@@ -38,5 +41,13 @@
     <ClInclude Include="MyProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Paint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
