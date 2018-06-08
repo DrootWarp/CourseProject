@@ -13,6 +13,8 @@
 using namespace std;
 
 class GUI {
+	MyProcess myProcess;
+	Paint paint;
 public:
 
 	static void Menu();

@@ -12,10 +12,13 @@
 #include <conio.h>
 #include <iomanip>
 
+#include "ThreadsResourse.h"
+
 using namespace std;
 
 class MyProcess {
 private:
+	ThreadResourse resourse;
 	HANDLE hProcessSnap;
 	HANDLE hProcess;
 	PROCESSENTRY32 pe32;
@@ -24,7 +27,7 @@ public:
 		pe32.dwSize = sizeof(PROCESSENTRY32);
 	}
 
-	SIZE_T GetProcessMemory();
+	SIZE_T GetProcessMemory(DWORD);
 	BOOL ShowProcessList();
 	BOOL KillProcess(DWORD);
 	BOOL ChangePriority(DWORD, DWORD);

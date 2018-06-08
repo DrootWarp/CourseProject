@@ -17,5 +17,4 @@ public:
 	DWORD WINAPI ThreadRunProcess(LPVOID);
 	DWORD WINAPI ThreadOpenTheProcessDirectory(LPVOID);
 	DWORD WINAPI ThreadChangePriority(LPVOID);
-
 };

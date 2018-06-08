@@ -4,10 +4,7 @@
 DWORD ThreadResourse::ThreadShowProcessList(LPVOID refreshTime)
 {
 	MyProcess Mp;
-	while (1) {
-		Mp.ShowProcessList();
-		Sleep((DWORD)refreshTime);
-	}
+	Mp.ShowProcessList();
 	return 0;
 }
 

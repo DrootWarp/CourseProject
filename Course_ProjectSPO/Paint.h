@@ -10,5 +10,6 @@ public:
 	void printCharTimes(char,int);
 	void paintFunctionsHeader(char filler);
 	void paintShowMenu(char filler);
-
+	void paintKillMenu(char filler);
+	void paintPriorityMenu(char filler);
 };

@@ -2,14 +2,18 @@
 #include "GUI.h"
 
 
-//SIZE_T MyProcess::GetProcessMemory()
-//{
-//	return pmc.WorkingSetSize;
-//}
-
-SIZE_T MyProcess::GetProcessMemory()
+SIZE_T MyProcess::GetProcessMemory(DWORD processID)
 {
-	return SIZE_T();
+	PROCESS_MEMORY_COUNTERS pmc;
+	hProcess = OpenProcess(PROCESS_QUERY_INFORMATION |
+		PROCESS_VM_READ,
+		FALSE, processID);
+
+	if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc)))
+	{
+	}
+
+	return pmc.WorkingSetSize;
 }
 
 BOOL MyProcess::ShowProcessList()
@@ -25,11 +29,13 @@ BOOL MyProcess::ShowProcessList()
 	ShowProcessHad();
 	do
 	{
+		dwProcessMemory = 0;
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
+		dwProcessMemory = GetProcessMemory(pe32.th32ProcessID);
 		GUI::printTableLine();
 		wcout << "*" << setw(40) << left << pe32.szExeFile
 			<< "*" << setw(15) << pe32.th32ProcessID
-			<< "*" << setw(15) << pe32.dwSize
+			<< "*" << setw(15) << dwProcessMemory/1536
 			<< "*" << setw(15) << pe32.cntThreads
 			<< "*" << setw(15) << pe32.pcPriClassBase
 			<< "*" << endl;
@@ -48,8 +54,8 @@ BOOL MyProcess::KillProcess(DWORD procID)
 		if (procID == pe32.th32ProcessID){
 
 			hProcess = OpenProcess(PROCESS_TERMINATE, 0, pe32.th32ProcessID);
-			TerminateProcess(hProcess, 0);
-			return 0;
+			TerminateProcess(hProcess, 077);
+			break;
 		}
 	}
 
@@ -66,7 +72,7 @@ BOOL MyProcess::ChangePriority(DWORD procID, DWORD priority)
 
 			hProcess = OpenProcess(PROCESS_SET_INFORMATION, 0, pe32.th32ProcessID);
 			SetPriorityClass(hProcess, priority);
-
+			break;
 		}
 	}
 

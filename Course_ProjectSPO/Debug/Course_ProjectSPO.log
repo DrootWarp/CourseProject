@@ -1,13 +1,2 @@
-﻿  GUI.cpp
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(137): warning C4101: 'Priority': unreferenced local variable
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(416): warning C4101: 'a': unreferenced local variable
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\gui.cpp(433): warning C4101: 'a': unreferenced local variable
-  MyProcess.cpp
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(18): warning C4101: 'dwProcessMemory': unreferenced local variable
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(17): warning C4101: 'dwPriorityClass': unreferenced local variable
-c:\users\ilya\source\repos\course_projectspo\course_projectspo\myprocess.cpp(19): warning C4101: 'pmc': unreferenced local variable
-  Paint.cpp
-  Source.cpp
-  ThreadsResourse.cpp
-  Generating Code...
+﻿  Paint.cpp
   Course_ProjectSPO.vcxproj -> C:\Users\Ilya\source\repos\Course_ProjectSPO\Debug\Course_ProjectSPO.exe

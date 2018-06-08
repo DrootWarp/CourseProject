@@ -46,3 +46,32 @@ void Paint::paintShowMenu(char filler) {
 		printCharTimes(filler, 80);
 	}
 }
+
+void Paint::paintKillMenu(char filler) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (short i = 0; i < 30; i++) {
+		SetConsoleCursorPosition(hConsole, { 0, i });
+		if (i > 10 && i < 16) {
+			printCharTimes(filler, 28);
+			SetConsoleCursorPosition(hConsole, { 52 , i });
+			printCharTimes(filler, 28);
+			continue;
+		}
+		printCharTimes(filler, 80);
+	}
+}
+
+void Paint::paintPriorityMenu(char filler)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (short i = 0; i < 30; i++) {
+		SetConsoleCursorPosition(hConsole, { 0, i });
+		if (i > 8 && i < 26) {
+			printCharTimes(filler, 28);
+			SetConsoleCursorPosition(hConsole, { 55 , i });
+			printCharTimes(filler, 28);
+			continue;
+		}
+		printCharTimes(filler, 80);
+	}
+}
